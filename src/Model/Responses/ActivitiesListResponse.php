@@ -26,6 +26,16 @@ class ActivitiesListResponse extends BaseResponse
   }
 
   /**
+   * Get activities Collection.
+   * 
+   * @return Collection
+   */
+  public function getCollection(): Collection
+  {
+    return $this->data;
+  }
+
+  /**
    * Filter the activities with a callback.
    *
    * @param callable $callback

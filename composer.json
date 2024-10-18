@@ -1,7 +1,7 @@
 {
     "name": "kokiddp/phptela",
     "description": "CulturaTela PHP API wrapper",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "license": "GPL-3.0-or-later",
     "autoload": {
         "psr-4": {
