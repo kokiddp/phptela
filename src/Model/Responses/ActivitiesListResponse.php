@@ -4,7 +4,6 @@ namespace KokiDDP\PHPTela\Model\Responses;
 
 use KokiDDP\PHPTela\Model\Activity;
 use Illuminate\Support\Collection;
-use Carbon\CarbonImmutable;
 
 class ActivitiesListResponse extends BaseResponse
 {
@@ -118,19 +117,19 @@ class ActivitiesListResponse extends BaseResponse
   /**
    * Filter the activities by dates
    * 
-   * @param CarbonImmutable $startDate
-   * @param CarbonImmutable|null $endDate
+   * @param \DateTimeImmutable $startDate
+   * @param \DateTimeImmutable|null $endDate
    * @return self
    */
-  public function filterByDates(CarbonImmutable $startDate, ?CarbonImmutable $endDate = null): self
+  public function filterByDates(\DateTimeImmutable $startDate, ?\DateTimeImmutable $endDate = null): self
   {
     $this->data = $this->data
       ->filter(fn(Activity $activity) => $activity->startDate
-        ? new CarbonImmutable($activity->startDate) >= $startDate
+        ? new \DateTimeImmutable($activity->startDate) >= $startDate
         : false
       )
       ->filter(fn(Activity $activity): string|null => $endDate !== null && $activity->endDate
-        ? new CarbonImmutable($activity->endDate) <= $endDate
+        ? new \DateTimeImmutable($activity->endDate) <= $endDate
         : null
       )
       ->values();

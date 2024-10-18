@@ -2,8 +2,6 @@
 
 namespace KokiDDP\PHPTela\Model;
 
-use Carbon\CarbonImmutable;
-
 class Activity
 {
   public string $title;
@@ -51,6 +49,6 @@ class Activity
     $this->isOpen = $data['isOpen'] ?? false;
     $this->vat = $data['vat'] ?? null;
     $this->activityId = $data['activityId'];
-    $this->sellingDays = array_map(fn($day) => new CarbonImmutable($day['day']), $data['sellingDays'] ?? []);
+    $this->sellingDays = array_map(fn($day) => new \DateTimeImmutable($day['day']), $data['sellingDays'] ?? []);
   }
 }
