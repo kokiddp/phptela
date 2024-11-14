@@ -49,6 +49,6 @@ class Activity
     $this->isOpen = $data['isOpen'] ?? false;
     $this->vat = $data['vat'] ?? null;
     $this->activityId = $data['activityId'];
-    $this->sellingDays = array_map(fn($day) => new SellingDay($day['day']), isset($data['sellingDays']) && $data['sellingDays'] ? $data['sellingDays'] : []);
+    $this->sellingDays = array_map(fn($dataDay) => new SellingDay($dataDay), isset($data['sellingDays']) && $data['sellingDays'] ? $data['sellingDays'] : []);
   }
 }
