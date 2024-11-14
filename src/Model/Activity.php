@@ -7,8 +7,8 @@ class Activity
   public string $title;
   public string $description;
   public string $type;
-  public ?string $startDate;
-  public ?string $endDate;
+  public ?\DateTimeInterface $startDate;
+  public ?\DateTimeInterface $endDate;
   public Info $info;
   public ?array $hashtags;
   public ?Settings $settings;
@@ -20,12 +20,12 @@ class Activity
   public Photo $mainPhotoObj;
   /** @var Photo[] */
   public array $galleryObjs;
-  public ?string $timestamp;
+  public ?\DateTimeInterface $timestamp;
   public ?array $deskWith;
   public bool $isOpen;
   public ?string $vat;
   public string $activityId;
-  /** @var \DateTimeInterface[] */
+  /** @var SellingDay[] */
   public array $sellingDays;
 
   public function __construct(array $data)
@@ -33,8 +33,8 @@ class Activity
     $this->title = $data['title'];
     $this->description = $data['description'];
     $this->type = $data['type'];
-    $this->startDate = $data['startDate'] ?? null;
-    $this->endDate = $data['endDate'] ?? null;
+    $this->startDate = isset($data['startDate']) && $data['startDate'] ? \DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s.v\Z', $data['startDate']) : null;
+    $this->endDate = isset($data['endDate']) && $data['endDate'] ? \DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s.v\Z', $data['endDate']) : null;
     $this->info = new Info($data['info']);
     $this->hashtags = $data['hashtags'] ?? null;
     $this->settings = isset($data['settings']) && $data['settings'] ? new Settings($data['settings']) : null;
@@ -44,11 +44,11 @@ class Activity
     $this->creator = $data['creator'];
     $this->mainPhotoObj = new Photo($data['mainPhotoObj']);
     $this->galleryObjs = array_map(fn($photo) => new Photo($photo), $data['galleryObjs'] ?? []);
-    $this->timestamp = $data['timestamp'] ?? null;
+    $this->timestamp = isset($data['timestamp']) && $data['timestamp'] ? \DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s.v\Z', $data['timestamp']) : null;
     $this->deskWith = $data['deskWith'] ?? null;
     $this->isOpen = $data['isOpen'] ?? false;
     $this->vat = $data['vat'] ?? null;
     $this->activityId = $data['activityId'];
-    $this->sellingDays = array_map(fn($day) => new \DateTimeImmutable($day['day']), $data['sellingDays'] ?? []);
+    $this->sellingDays = array_map(fn($day) => new SellingDay($day['day']), isset($data['sellingDays']) && $data['sellingDays'] ? $data['sellingDays'] : []);
   }
 }

@@ -58,8 +58,9 @@ $response = $client->getAllActivities();
 $activities = $response->filterByTitle('something')->get();
 $activities = $response->filterByType('Museo')->get();
 $activities = $response->search('keyword')->get();
+$activities = $response->filterByCreator('someCreatorId')->get();
 $activities = $response->filterByCity('Lucca')->get();
-$activities = $response->filterByDates(new CarbonImmutable('now'), new CarbonImmutable('next month'))->get();
+$activities = $response->filterByDates(new DateTimeImmutable('now'), new DateTimeImmutable('next month'))->get();
 $activities = $response->orderByStartDate()->get();
 ```
 
@@ -70,7 +71,7 @@ $response = $client->getAllActivities();
 $activities = $response
     ->filterByType('Evento')
     ->filterByCity('Lucca')
-    ->filterByDates(new CarbonImmutable('now'), new CarbonImmutable('next month'))
+    ->filterByDates(new DateTimeImmutable('now'), new DateTimeImmutable('next month'))
     ->orderByStartDate()
     ->get();
 ```
@@ -82,6 +83,15 @@ $response = $client->getAllActivities();
 $activities = $response
     ->where(fn(Activity $activity) => $activity->isOpen)
     ->get();
+```
+
+### Login
+
+Login to CulturaTela service
+
+```php
+$response = $client->login('em@i.l', 'password');
+$user = $response->get();
 ```
 
 ## License

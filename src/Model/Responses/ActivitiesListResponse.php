@@ -62,6 +62,20 @@ class ActivitiesListResponse extends BaseResponse
   }
 
   /**
+   * Filter the activities by creator.
+   * 
+   * @param string $creator
+   * @return self
+   */
+  public function filterByCreator(string $creator): self
+  {
+    $this->data = $this->data
+      ->filter(fn(Activity $activity) => $activity->creator === $creator)
+      ->values();
+    return $this;
+  }
+
+  /**
    * Search the activities by title and description.
    *
    * @param string $keyword
@@ -116,7 +130,7 @@ class ActivitiesListResponse extends BaseResponse
   {
     $this->data = $this->data
       ->sortBy(
-        fn(Activity $activity) => $activity->startDate ? new CarbonImmutable($activity->startDate) : null,
+        fn(Activity $activity) => $activity->startDate ? $activity->startDate : null,
         SORT_REGULAR,
         !$ascending
       )
@@ -127,19 +141,19 @@ class ActivitiesListResponse extends BaseResponse
   /**
    * Filter the activities by dates
    * 
-   * @param \DateTimeImmutable $startDate
-   * @param \DateTimeImmutable|null $endDate
+   * @param \DateTimeInterface $startDate
+   * @param \DateTimeInterface|null $endDate
    * @return self
    */
-  public function filterByDates(\DateTimeImmutable $startDate, ?\DateTimeImmutable $endDate = null): self
+  public function filterByDates(\DateTimeInterface $startDate, ?\DateTimeInterface $endDate = null): self
   {
     $this->data = $this->data
       ->filter(fn(Activity $activity) => $activity->startDate
-        ? new \DateTimeImmutable($activity->startDate) >= $startDate
-        : false
+        ? $activity->startDate >= $startDate
+        : null
       )
       ->filter(fn(Activity $activity): string|null => $endDate !== null && $activity->endDate
-        ? new \DateTimeImmutable($activity->endDate) <= $endDate
+        ? $activity->endDate <= $endDate
         : null
       )
       ->values();
